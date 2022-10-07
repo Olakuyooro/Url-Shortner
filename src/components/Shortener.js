@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import ShortList from "./ShortList";
 import "./Shortner.css";
-import Button from "./Button";
+
 
 const model = (original, shortened, code) => ({
   original,
@@ -9,7 +9,6 @@ const model = (original, shortened, code) => ({
   code
 });
 
-let content = (<p className="text-red-500 text-xs">Please add a link</p>)
 
 const Shortener = () => {
   const enteredUrl = useRef();
@@ -63,14 +62,14 @@ const Shortener = () => {
         <form
           className="short w-128 -mt-16 bg-hero-pattern bg-no-repeat bg-DarkViolet mb-16 rounded-md flex flex-col justify-center items-center lg:w-180 lg:flex-row lg:-mt-20 lg:space-x-6 "
           onSubmit={formHandler}
-        > <div className="flex flex-col mb-4 lg:mt-3 h-9"> <input
+        > <div className="flex flex-col mb-8 lg:mt-3 h-9"> <input
             type="url"
             placeholder="Shorten a link here..."
             ref={enteredUrl}
             style={{border: borderChange ? '0.5px red solid': ""}}
             className="p-2 rounded-lg lg:w-170"
           ></input>
-          {error && content}</div>
+          {error && <p className="text-red-500 text-sm ">Please add a link</p>}</div>
          
           <button
             className="bg-Cyan text-white px-16 py-2 rounded-md"
