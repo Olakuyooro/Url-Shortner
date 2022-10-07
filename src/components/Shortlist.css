@@ -1,0 +1,9 @@
+@media screen and (max-width: 320px) {
+    .outputList {
+      width: 20rem;
+    }
+
+    .line{
+        width: 18rem;
+    }
+  }

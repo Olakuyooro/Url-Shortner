@@ -1,0 +1,12 @@
+.short{
+    height: 10rem;
+    padding: 3rem;
+    background-position: 155px -8px;
+    background-size: cover;
+}
+
+@media screen and (max-width: 320px) {
+    .short{
+      width: 20rem;
+    }
+  }
