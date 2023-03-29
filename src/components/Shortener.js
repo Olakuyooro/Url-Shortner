@@ -62,7 +62,7 @@ const Shortener = () => {
         <form
           className="short w-128 -mt-16 bg-hero-pattern bg-no-repeat bg-DarkViolet mb-16 rounded-md flex flex-col justify-center items-center lg:w-180 lg:flex-row lg:-mt-20 lg:space-x-6 "
           onSubmit={formHandler}
-        > <div className="flex flex-col mb-8 lg:mt-3 h-9"> <input
+        > <div className=" mb-8 lg:mb-0 lg:mt-0 h-9"> <input
             type="url"
             placeholder="Shorten a link here..."
             ref={enteredUrl}
