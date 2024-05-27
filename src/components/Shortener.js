@@ -1,87 +1,95 @@
 import React, { useRef, useState } from "react";
 import ShortList from "./ShortList";
 import "./Shortner.css";
-
+import { motion } from "framer-motion";
 
 const model = (original, shortened, code) => ({
   original,
   shortened,
-  code
+  code,
 });
-
 
 const Shortener = () => {
   const enteredUrl = useRef();
-  const [newList, setList] = useState([]);
-  const [error, setError] = useState(false)
-  const [borderChange, setBorderColor] = useState(false)
- 
+  const [state, setState] = useState({
+    newList: [],
+    error: false,
+    borderChange: false,
+    isLoading: false,
+  });
 
-  const formHandler = (event) => {
+  const formHandler = async (event) => {
     event.preventDefault();
 
     const tunUrl = enteredUrl.current.value;
-    console.log(tunUrl)
-
     if (tunUrl.trim() === "") {
-      setError(true)
-      setBorderColor(true)
-      return
-    }else{
-      setError(false)
-      setBorderColor(false)
+      setState({ ...state, error: true, borderChange: true });
+      return;
+    } else {
+      setState({ ...state, error: false, borderChange: false, isLoading: true });
     }
 
-
-    fetch(`https://api.shrtco.de/v2/shorten?url=${tunUrl}`, {
-      method: "POST",
-      body:JSON.stringify(),
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((update) => {
-        console.log(update);
-        setList((prevList) => {
-          return [
-            ...prevList,
-            model(update.result.original_link, update.result.short_link, update.result.code)
-          ];
-        });
+    try {
+      const response = await fetch("https://backend-url-shortner-6pfa.onrender.com/shorten", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ "originalUrl": tunUrl }),
       });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const update = await response.json();
+      console.log(update.shortUrl)
+      setState((prevState) => ({
+        ...prevState,
+        newList: [
+          ...prevState.newList,
+          model(tunUrl, `https://backend-url-shortner-6pfa.onrender.com/${update.shortUrl}`, update.shortUrl),
+        ],
+        isLoading: false,
+      }));
+
+    } catch (error) {
+      console.error("Error:", error);
+      setState({ ...state, error: true, borderChange: true, isLoading: false });
+    }
 
     enteredUrl.current.value = "";
   };
 
-
-
-
   return (
-    <>
-      <div>
-        <form
-          className="short w-128 -mt-16 bg-hero-pattern bg-no-repeat bg-DarkViolet mb-16 rounded-md flex flex-col justify-center items-center lg:w-180 lg:flex-row lg:-mt-20 lg:space-x-6 "
-          onSubmit={formHandler}
-        > <div className=" mb-8 lg:mb-0 lg:mt-0 h-9"> <input
+    <div>
+      <motion.form
+        initial={{ x: "100vw" }}
+        animate={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 50 }}
+        className="short w-128 -mt-16 bg-hero-pattern bg-no-repeat bg-DarkViolet mb-16 rounded-md flex flex-col justify-center items-center lg:w-180 lg:flex-row lg:-mt-20 lg:space-x-6"
+        onSubmit={formHandler}
+      >
+        <div className="mb-8 lg:mb-0 lg:mt-0 h-9">
+          <input
             type="url"
             placeholder="Shorten a link here..."
             ref={enteredUrl}
-            style={{border: borderChange ? '0.5px red solid': ""}}
-            className="p-2 rounded-lg lg:w-170"
-          ></input>
-          {error && <p className="text-red-500 text-sm ">Please add a link</p>}</div>
-         
-          <button
-            className="bg-Cyan text-white px-16 py-2 rounded-md"
-            type="submit"
-          >
-            Shorten it!
-          </button>
-        </form>
+            className={`p-2 rounded-lg lg:w-170 ${state.borderChange ? 'border-red-500 border' : ''}`}
+          />
+          {state.error && <p className="text-red-500 text-sm">Please add a valid link</p>}
+        </div>
+        <button
+          className="bg-Cyan text-white px-16 py-2 rounded-md"
+          type="submit"
+          disabled={state.isLoading}
+        >
+          {state.isLoading ? "Shortening..." : "Shorten it!"}
+        </button>
+      </motion.form>
 
-        <ShortList item={newList}></ShortList>
-      </div>
-    </>
+      <ShortList item={state.newList} />
+    </div>
   );
 };
 

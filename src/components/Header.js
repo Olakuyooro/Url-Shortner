@@ -11,13 +11,13 @@ const Header = (props) => {
         <div className="lg:flex">
           <img src={image} alt=""></img>
           <ul className="hidden lg:block lg:ml-20 lg:space-x-5 ">
-            <a className="hover:text-black cursor-pointer">Features</a>
-            <a className="hover:text-black cursor-pointer">Pricing</a>
-            <a className="hover:text-black cursor-pointer">Resources</a>
+            <a href="/" className="hover:text-black cursor-pointer transition-colors duration-300">Features</a>
+            <a href="/" className="hover:text-black cursor-pointer transition-colors duration-300">Pricing</a>
+            <a href="/" className="hover:text-black cursor-pointer transition-colors duration-300">Resources</a>
           </ul>
         </div>
         <ul className="hidden lg:block lg:ml-32 lg:space-x-8 ">
-          <a className="hover:text-black cursor-pointer">Login</a>
+          <a href="/" className="hover:text-black cursor-pointer transition-colors duration-300">Login</a>
           <Button>
             Sign Up
           </Button>
