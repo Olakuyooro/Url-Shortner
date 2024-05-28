@@ -15,10 +15,10 @@ const ShortList = (props) => {
       key={link.code}
       className="outputList bg-white mb-4 px-2 py-6 rounded-md font-medium w-128 lg:flex justify-between lg:w-180"
     >
-      <li className="list-none mb-2 lg:mt-2 overflow-hidden">{link.original}</li>
+      <li className="list-none mb-2 lg:mt-2 overflow-hidden text-sm">{link.original}</li>
       <hr className="line w-128 m-auto mb-3 lg:hidden"></hr>
       <div className="lg:flex lg:flex-row space-x-4 ">
-        <li className="text-Cyan list-none mb-2 lg:mt-2">{link.shortened}</li>
+        <li className="text-Cyan list-none mb-2 lg:mt-2 text-sm">{link.shortened}</li>
          <Button link={link}/>
       </div>
     </div>
